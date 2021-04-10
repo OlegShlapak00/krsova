@@ -16,9 +16,7 @@ mongoose.connect(`mongodb+srv://user:12345@cluster0.hnyca.mongodb.net/NODEJS_HW3
 
 app.use(express.static('dist/client'));
 
-app.get('/', (req, res) => {
-  res.sendFile(`index.html`, {root: `dist/client/`});
-});
+
 
 
 
@@ -30,5 +28,8 @@ app.use("/api",userRouter);
 app.use("/api",truckRouter);
 app.use("/api",loadRouter)
 
+app.get('/*', (req, res) => {
+  res.sendFile(`index.html`, {root: `dist/client/`});
+});
 
 app.listen(8080||process.env.PORT , () => console.log("listening"));
