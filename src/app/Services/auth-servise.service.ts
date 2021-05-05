@@ -1,13 +1,7 @@
 import {Injectable} from '@angular/core';
-import {environment} from '../environments/environment';
+import {environment} from '../../environments/environment';
 import {HttpClient} from '@angular/common/http';
-import {BehaviorSubject, Subject} from 'rxjs';
-
-
-class LoginResponse {
-  massage: string;
-  token?: string;
-}
+import {BehaviorSubject, } from 'rxjs';
 
 
 @Injectable({
@@ -17,14 +11,16 @@ class LoginResponse {
 export class AuthServiseService {
   IsLogged ;
   serverPath;
-
+  UserToken;
   constructor(private http: HttpClient) {
     this.serverPath = environment.serverPath;
     if (localStorage.getItem('token') !== null){
       this.IsLogged = new BehaviorSubject<boolean>(true);
+      this.UserToken = new BehaviorSubject(localStorage.getItem('token'));
     }
     else {
       this.IsLogged = new BehaviorSubject<boolean>(false);
+      this.UserToken = new BehaviorSubject(null);
     }
   }
 
@@ -34,6 +30,7 @@ export class AuthServiseService {
         if (res.token) {
           this.IsLogged.next(true);
           localStorage.setItem('token', res.token);
+          this.UserToken.next(res.token);
           console.log('login success');
         }
       });
@@ -53,5 +50,6 @@ export class AuthServiseService {
   signOut(): void {
     this.IsLogged.next(false);
     localStorage.removeItem('token');
+    this.UserToken.next(null);
   }
 }

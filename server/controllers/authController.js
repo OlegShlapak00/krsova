@@ -25,17 +25,17 @@ module.exports.register = (request, response) => {
         });
 }
 
-module.exports.login = (request, response) => {
+module.exports.login = async (request, response) => {
 
     const {email, password} = request.body;
     let user;
-    User.findOne({email}).exec()
+     await User.findOne({email}).exec()
         .then(selectedUser =>{
             user = selectedUser;
         })
         .catch((err) => response.status(500).json({massage: err} ));
 
-    RegistrationCredentials.findOne({email, password}).exec()
+    await RegistrationCredentials.findOne({email, password}).exec()
         .then(selectedUser => {
             if (!selectedUser) {
                 return response.status(400).json({massage: "Wrong email or password"});
@@ -54,9 +54,9 @@ module.exports.login = (request, response) => {
                     email: user.email
                 }
             }
-            return  response.json({massage: 'success', token: jwt.sign(JSON.stringify(jwtObj), secret)});
+            return  response.status(200).json({massage: 'success', token: jwt.sign(JSON.stringify(jwtObj), secret)});
         })
         .catch((err) => {
-            return  response.status(500).json({massage: err});
+            return  response.status(500).json({massage: err + "SSS"});
         });
 }

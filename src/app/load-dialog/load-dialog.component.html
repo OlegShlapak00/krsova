@@ -1,1 +1,61 @@
-<p>load-dialog works!</p>
+<form action="" class="form" [formGroup]="form">
+  <h2>Update Load</h2>
+  <mat-form-field class="full-width form-field">
+    <mat-label>Name of load</mat-label>
+    <input type="text" matInput formControlName="name">
+    <mat-error *ngIf="form.controls.name.errors">
+      *required field
+    </mat-error>
+  </mat-form-field>
+  <mat-form-field class="full-width form-field">
+    <mat-label>Payload of load</mat-label>
+    <input type="number" matInput formControlName="payload">
+    <mat-error *ngIf="form.controls.payload.errors">
+      *required field
+    </mat-error>
+  </mat-form-field>
+  <mat-form-field class="full-width form-field">
+    <mat-label>Enter the pickup address</mat-label>
+    <input type="text" matInput formControlName="pickup_address">
+    <mat-error *ngIf="form.controls.pickup_address.errors">
+      *required field
+    </mat-error>
+  </mat-form-field>
+  <mat-form-field class="full-width form-field">
+    <mat-label>Enter the delivery address</mat-label>
+    <input type="text" matInput formControlName="delivery_address">
+    <mat-error *ngIf="form.controls.delivery_address.errors">
+      *required field
+    </mat-error>
+  </mat-form-field>
+  <div class="dimensions">
+    <h2>Enter the load dimensions</h2>
+    <mat-form-field class="full-width form-field">
+      <mat-label>Width</mat-label>
+      <input type="number" matInput formControlName="width">
+      <mat-error *ngIf="form.controls.width.errors">
+        *required field
+      </mat-error>
+    </mat-form-field>
+    <mat-form-field class="full-width form-field">
+      <mat-label>Length</mat-label>
+      <input type="number" matInput formControlName="length">
+      <mat-error *ngIf="form.controls.length.errors">
+        *required field
+      </mat-error>
+    </mat-form-field>
+    <mat-form-field class="full-width form-field">
+      <mat-label>height</mat-label>
+      <input type="number" matInput formControlName="height">
+      <mat-error *ngIf="form.controls.height.errors">
+        *required field
+      </mat-error>
+    </mat-form-field>
+  </div>
+  <div class="load-form-buttons">
+    <button mat-raised-button (click)="saveLoad()" color="primary">Save the load</button>
+    <button mat-raised-button color="warn" (click)="deleteLoad(data.load._id)">Delete</button>
+    <button mat-raised-button (click)="close()" color="basic">Close</button>
+  </div>
+</form>
+

@@ -1,1 +1,255 @@
-<p>home-page works!</p>
+<header class="header">
+  <div class="logo-info">
+    <img src="assets/Logo.png" class="logo" alt="logo">
+    <h2>FoxiDrivers</h2>
+  </div>
+  <div class="user-info">
+    <h3>Welcome</h3>
+    <h3 class="user-name">
+      {{user.email}}
+    </h3>
+    <h3>Нou logged in as {{user.role}}</h3>
+  </div>
+</header>
+
+<mat-tab-group >
+  <mat-tab label="About Me">
+    <h1 class="welcome">Welcome</h1>
+    <form class="form" action="">
+      <h2 class="form-label">Info about user</h2>
+      <h3 class="form-field">Email: {{user.email}}</h3>
+      <h3 class="form-field">Created date: {{user.date | date}}</h3>
+      <h3>Register as : {{user.role}}</h3>
+    </form>
+
+    <form class="form" action="">
+      <h2>You can exit from this profile</h2>
+      <h3>Just press the button :)</h3>
+      <button mat-raised-button color="primary" (click)="exit()">Sign Out</button>
+    </form>
+
+    <form class="form" action="">
+      <h2>You can delete this profile</h2>
+      <button mat-raised-button color="primary" matTooltip="Are you sure about this?" (click)="deleteUser()">Delete me
+      </button>
+    </form>
+
+
+  </mat-tab>
+  <mat-tab *ngIf="user.role ==='DRIVER'" label="My Trucks">
+    <section class="trucks">
+      <div *ngFor="let truck of userTrucks" class="truck">
+        <h2>{{truck.type}}</h2>
+        <h3>Created date: {{truck.created_date | date }}</h3>
+        <h3>Truck Status: {{truck.status | truckStatus}}</h3>
+
+        <button mat-raised-button color="primary" (click)="assignTruck(truck._id)" [disabled]="truck.status !== 'OS'">
+          Assign
+        </button>
+        <button mat-raised-button color="primary" (click)="unAssignTruck(truck._id)" [disabled]="truck.status !=='IS'">
+          Un assign
+        </button>
+        <button mat-raised-button color="primary" (click)="updateTruck(truck._id, truck.type)"
+                [disabled]="truck.status !=='OS'">Change Type
+        </button>
+        <button mat-raised-button color="warn" (click)="deleteTruck(truck._id)" [disabled]="truck.status !=='OS'">
+          Delete
+        </button>
+      </div>
+      <div (click)="createTruck()" class="create-truck">
+        <img class="add-truck-icon"
+             src="https://icons-for-free.com/iconfiles/png/512/circle+more+plus+icon-1320183136549593898.png" alt="">
+        <h2>Add new truck</h2>
+      </div>
+    </section>
+  </mat-tab>
+  <mat-tab *ngIf="user.role ==='DRIVER'" label="Active Loads">
+    <div class="my-loads-header">
+      <h1></h1>
+      <h1>Active and New loads</h1>
+      <button mat-raised-button color="basic" class="update-load-button">
+        <img class="my-loads-header__refresh"
+             (click)="update()"
+             src="http://simpleicon.com/wp-content/uploads/refresh.png"
+             alt=""
+             matTooltip="Update my loads"
+             matTooltipPosition="left"
+        >
+      </button>
+
+    </div>
+    <section *ngIf="( userLoads| load : 'ACTIVE').length === 0" class="no-load">
+      <h1>You don`t have any active loads</h1>
+      <h1>For newest information press update button</h1>
+      <button mat-raised-button color="basic" class="update-load-button no-load-button">
+        <img class="my-loads-header__refresh "
+             (click)="update()"
+             src="http://simpleicon.com/wp-content/uploads/refresh.png"
+             alt=""
+             matTooltip="Update my loads"
+             matTooltipPosition="left"
+        >
+      </button>
+    </section>
+    <section *ngIf="userLoads" class="loads">
+      <div *ngFor="let load of userLoads| load : 'ACTIVE'" class="load-item">
+        <h2 class="load-name">{{load.name}}</h2>
+        <h3>Created date: {{load.created_date | date }}</h3>
+        <h3>Pickup address: {{load.pickup_address}}</h3>
+        <h3>Delivery address: {{load.delivery_address}}</h3>
+        <h3>Payload: {{load.payload}}</h3>
+        <h3>Load state: {{load.state}}</h3>
+        <h3>Load status: {{load.status}}</h3>
+        <div class="load-dimensions">
+          <h2>Load dimensions:</h2>
+          <h4>Width: {{load.dimensions.width}}</h4>
+          <h4>Length: {{load.dimensions.length}}</h4>
+          <h4>Height: {{load.dimensions.height}}</h4>
+        </div>
+
+        <button mat-raised-button color="primary" (click)="activeLoadChangeState(load._id)"
+                [disabled]="load.state === 'Arrived to delivery'">Change to next state
+        </button>
+      </div>
+    </section>
+  </mat-tab>
+  <mat-tab *ngIf="user.role ==='SHIPPER'" label="Create new Load">
+    <form class="load-form form" [formGroup]="loadForm">
+      <h2>Create Load</h2>
+      <mat-form-field class="full-width form-field">
+        <mat-label>Name of load</mat-label>
+        <input type="text" matInput formControlName="name">
+        <mat-error *ngIf="loadForm.controls.name.errors">
+          *required field
+        </mat-error>
+      </mat-form-field>
+      <mat-form-field class="full-width form-field">
+        <mat-label>Payload of load</mat-label>
+        <input type="number" matInput formControlName="payload">
+        <mat-error *ngIf="loadForm.controls.payload.errors">
+          *required field
+        </mat-error>
+      </mat-form-field>
+      <mat-form-field class="full-width form-field">
+        <mat-label>Enter the pickup address</mat-label>
+        <input type="text" matInput formControlName="pickup_address">
+        <mat-error *ngIf="loadForm.controls.pickup_address.errors">
+          *required field
+        </mat-error>
+      </mat-form-field>
+      <mat-form-field class="full-width form-field">
+        <mat-label>Enter the delivery address</mat-label>
+        <input type="text" matInput formControlName="delivery_address">
+        <mat-error *ngIf="loadForm.controls.delivery_address.errors">
+          *required field
+        </mat-error>
+      </mat-form-field>
+      <div class="dimensions">
+        <h2>Enter the load dimensions</h2>
+        <mat-form-field class="full-width form-field">
+          <mat-label>Width</mat-label>
+          <input type="number" matInput formControlName="width">
+          <mat-error *ngIf="loadForm.controls.width.errors">
+            *required field
+          </mat-error>
+        </mat-form-field>
+        <mat-form-field class="full-width form-field">
+          <mat-label>Length</mat-label>
+          <input type="number" matInput formControlName="length">
+          <mat-error *ngIf="loadForm.controls.length.errors">
+            *required field
+          </mat-error>
+        </mat-form-field>
+        <mat-form-field class="full-width form-field">
+          <mat-label>height</mat-label>
+          <input type="number" matInput formControlName="height">
+          <mat-error *ngIf="loadForm.controls.height.errors">
+            *required field
+          </mat-error>
+        </mat-form-field>
+      </div>
+      <div class="load-form-buttons">
+        <button mat-raised-button (click)="saveLoad()" color="basic">Save the load</button>
+        <button mat-raised-button (click)="saveAndPostLoad()" color="primary">Save and post</button>
+      </div>
+    </form>
+  </mat-tab>
+  <mat-tab *ngIf="user.role ==='SHIPPER'" label="My Loads">
+    <div class="my-loads-header">
+      <h1></h1>
+      <h1>Active and New loads</h1>
+      <button mat-raised-button color="basic" class="update-load-button">
+        <img class="my-loads-header__refresh"
+             (click)="updateLoads()"
+             src="http://simpleicon.com/wp-content/uploads/refresh.png"
+             alt=""
+             matTooltip="Update my loads"
+             matTooltipPosition="left"
+        >
+      </button>
+
+    </div>
+
+    <section class="loads">
+      <div *ngFor="let load of userLoads" class="load-item">
+        <h2 class="load-name">{{load.name}}</h2>
+        <h3>Created date: {{load.created_date | date }}</h3>
+        <h3>Pickup address: {{load.pickup_address}}</h3>
+        <h3>Delivery address: {{load.delivery_address}}</h3>
+        <h3>Payload: {{load.payload}}</h3>
+        <h3>Load state: {{load.state}}</h3>
+        <h3>Load status: {{load.status}}</h3>
+        <div class="load-dimensions">
+          <h2>Load dimensions:</h2>
+          <h4>Width: {{load.dimensions.width}}</h4>
+          <h4>Length: {{load.dimensions.length}}</h4>
+          <h4>Height: {{load.dimensions.height}}</h4>
+        </div>
+
+        <button mat-raised-button color="primary" (click)="MyLoadsPostLoad(load._id)"
+                [disabled]="load.status !== 'NEW'">POST LOAD
+        </button>
+        <button mat-raised-button color="primary" (click)="editLoad(load)" [disabled]="load.status !=='NEW'">Edit LOAD
+        </button>
+        <button mat-raised-button color="warn" (click)="deleteLoad(load._id)" [disabled]="load.status !=='NEW'">Delete
+        </button>
+      </div>
+    </section>
+  </mat-tab>
+  <mat-tab label="History">
+    <div class="my-loads-header">
+      <h1></h1>
+      <h1>Loads history</h1>
+      <button mat-raised-button color="basic" class="update-load-button">
+        <img class="my-loads-header__refresh"
+             (click)="updateLoads()"
+             src="http://simpleicon.com/wp-content/uploads/refresh.png"
+             alt=""
+             matTooltip="Update my loads"
+             matTooltipPosition="left"
+        >
+      </button>
+
+    </div>
+
+    <section class="loads">
+      <div *ngFor="let load of userLoads| load : 'HISTORY'" class="load-item">
+        <h2 class="load-name">{{load.name}}</h2>
+        <h3>Created date: {{load.created_date | date }}</h3>
+        <h3>Pickup address: {{load.pickup_address}}</h3>
+        <h3>Delivery address: {{load.delivery_address}}</h3>
+        <h3>Payload: {{load.payload}}</h3>
+        <h3>Load state: {{load.state}}</h3>
+        <h3>Load status: {{load.status}}</h3>
+        <div class="load-dimensions">
+          <h2>Load dimensions:</h2>
+          <h4>Width: {{load.dimensions.width}}</h4>
+          <h4>Length: {{load.dimensions.length}}</h4>
+          <h4>Height: {{load.dimensions.height}}</h4>
+        </div>
+
+      </div>
+    </section>
+  </mat-tab>
+</mat-tab-group>
+

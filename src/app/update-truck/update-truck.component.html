@@ -1,1 +1,12 @@
-<p>update-truck works!</p>
+
+<mat-form-field appearance="fill" class="full-width">
+  <mat-label>Choose new truck type</mat-label>
+  <mat-select [(value)]="selectedType.value" required>
+    <mat-option value="SPRINTER">Sprinter</mat-option>
+    <mat-option value="SMALL STRAIGHT">Small straight</mat-option>
+    <mat-option value="LARGE STRAIGHT">Large straight</mat-option>
+  </mat-select>
+
+</mat-form-field>
+<button mat-raised-button color="primary" (click)="submit()" [disabled]="!selectedType.value" >Submit</button>
+<button mat-raised-button (click)="exit()" >Cancel</button>

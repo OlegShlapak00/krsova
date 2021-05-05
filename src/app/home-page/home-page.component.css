@@ -1,0 +1,117 @@
+.header {
+  display: flex;
+  justify-content: space-between;
+  background: #3f51b5;
+  color: white;
+  height: 100px;
+}
+.logo-info{
+  padding: 0 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+}
+.logo{
+  height: 50px;
+}
+.user-info{
+  padding: 0 20px;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+h1, h2, h3, h4 {
+  margin: 0;
+}
+.welcome{
+  padding-top: 20px;
+  font-size: 40px;
+  text-align: center;
+}
+.form{
+  padding: 40px;
+  border: #3f51b5 2px solid;
+  border-radius: 20px;
+  background: #ebeef0;
+  margin: 20px;
+}
+.load-form {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+.full-width {
+ width: 100%;
+}
+.loads {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+}
+.load-item {
+  width: 300px;
+  padding: 20px;
+  margin: 20px;
+  background: #ebeef0;
+  border: #3f51b5 2px solid;
+  border-radius: 20px;
+}
+.my-loads-header{
+  display: flex;
+  justify-content: space-between;
+  font-size: 40px;
+  padding: 20px;
+}
+.load-name {
+  text-align: center;
+}
+.load-dimensions {
+  padding: 20px;
+}
+.my-loads-header__refresh{
+  height: 50px;
+}
+.update-load-button {
+  margin-right: 50px;
+}
+.truck{
+  width: 300px;
+  padding: 20px;
+  margin: 20px;
+  background: #ebeef0;
+  border: #3f51b5 2px solid;
+  border-radius: 20px;
+}
+.trucks {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+}
+.create-truck{
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: 300px;
+  padding: 20px;
+  margin: 20px;
+  background: #ebeef0;
+  border: #3f51b5 2px solid;
+  border-radius: 20px;
+}
+.add-truck-icon {
+  width: 125px;
+}
+.no-load {
+  text-align: center;
+}
+.no-load-button{
+  margin-top: 20px;
+}

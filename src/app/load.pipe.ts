@@ -5,8 +5,23 @@ import { Pipe, PipeTransform } from '@angular/core';
 })
 export class LoadPipe implements PipeTransform {
 
-  transform(value: unknown, ...args: unknown[]): unknown {
-    return null;
+  transform(value: any, type: string): any {
+    let res;
+    if (type === 'ACTIVE'){
+      res = value.filter(load => {
+        if ( load.status !== 'SHIPPED'){
+          return load;
+        }
+      });
+    }
+    if (type === 'HISTORY'){
+      res = value.filter(load => {
+        if ( load.status === 'SHIPPED'){
+          return load;
+        }
+      });
+    }
+    return res;
   }
 
 }

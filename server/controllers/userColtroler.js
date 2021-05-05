@@ -3,17 +3,22 @@ const jwt = require("jsonwebtoken");
 const  registrationCredentials = require('../models/registrationCredentials');
 
 module.exports.getMe = (request, response) => {
-    const [, token] = request.headers.authorization.split(' ');
-    const id = jwt.decode(token).user._id;
-    User.findOne({"_id": id },{__v:0},  (err, user) => {
-            if (!user) {
-                return response.status(400).json({massage: err})
-            }
-            return response.status(200).json({user: user})
-        }
-    ).catch((err) => {
-        return response.status(500).json({massage: err})
-    })
+    const id = request.token.user._id;
+    const email = request.token.user.email;
+    const date = request.token.user.createdDate;
+    const role = request.token.regCred.role;
+    if(id || email || date || role){
+      res = {
+        _id: id,
+        email: email,
+        date: date,
+        role: role
+      }
+
+      return response.status(200).json({res});
+    }
+    return response.status(500).json({massage: "Server error"});
+
 }
 
 module.exports.deleteMe = (request, response) => {

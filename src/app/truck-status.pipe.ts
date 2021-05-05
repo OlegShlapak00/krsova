@@ -5,7 +5,12 @@ import { Pipe, PipeTransform } from '@angular/core';
 })
 export class TruckStatusPipe implements PipeTransform {
 
-  transform(value: unknown, ...args: unknown[]): unknown {
+  transform(value: string): string {
+    switch (value){
+      case 'IS' : return 'In Service';
+      case 'OS' : return 'Out of Service';
+      case 'OL' : return 'On Load';
+    }
     return null;
   }
 

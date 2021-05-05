@@ -1,5 +1,6 @@
 const express = require("express");
 const mongoose = require("mongoose");
+const cors = require("cors");
 const app = express();
 
 const authRouter = require("./routers/authRouter");
@@ -13,21 +14,16 @@ mongoose.connect(`mongodb+srv://user:12345@cluster0.hnyca.mongodb.net/NODEJS_HW3
     useFindAndModify: false,
     useCreateIndex: true
 });
-
-app.use(express.static('dist/client'));
-
-
-
-
-
-
+app.use(cors());
 app.use(express.json());
 
 app.use("/api",authRouter);
 app.use("/api",userRouter);
 app.use("/api",truckRouter);
-app.use("/api",loadRouter)
+app.use("/api",loadRouter);
 
+
+app.use(express.static('dist/client'));
 app.get('/*', (req, res) => {
   res.sendFile(`index.html`, {root: `dist/client/`});
 });
