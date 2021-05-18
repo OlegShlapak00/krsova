@@ -191,7 +191,7 @@
     </div>
 
     <section class="loads">
-      <div *ngFor="let load of userLoads" class="load-item">
+      <div *ngFor="let load of userLoads | load : 'ACTIVE' " class="load-item">
         <h2 class="load-name">{{load.name}}</h2>
         <h3>Created date: {{load.created_date | date }}</h3>
         <h3>Pickup address: {{load.pickup_address}}</h3>
