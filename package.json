@@ -3,9 +3,10 @@
   "version": "0.0.0",
   "scripts": {
     "ng": "ng",
-    "client": "ng serve",
+    "debug": "ng serve",
     "start": "node ./server/index.js",
-    "build": "ng build",
+    "client": "node ./server.js",
+    "build": "ng build --prod",
     "test": "ng test",
     "lint": "ng lint",
     "e2e": "ng e2e"
