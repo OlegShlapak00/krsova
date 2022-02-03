@@ -12,16 +12,16 @@ module.exports.register = (request, response) => {
     regCredential.save()
         .then(() => {
             if (!email || !password || !role) {
-                return   response.status(400).json({massage: "Bad request"});
+                return  response.status(400).json({massage: "Bad request"});
             }
             user.save()
-                .catch(() => {
-                    return  response.status(500).json({massage: "Server error"});
+                .catch((err) => {
+                    return  response.status(500).json({massage: "Server 2 error", err});
                 });
             return  response.json({massage: 'Success'});
         })
-        .catch(() => {
-            return  response.status(500).json({massage: "Server error"});
+        .catch((e) => {
+            return  response.status(500).json({massage: "Server 1 error", e});
         });
 }
 

@@ -1,4 +1,8 @@
 
+<mat-form-field *ngIf="isCreate" class="full-width">
+  <mat-label>Choose truck name</mat-label>
+  <input matInput [(ngModel)]="name">
+</mat-form-field>
 <mat-form-field appearance="fill" class="full-width">
   <mat-label>Choose new truck type</mat-label>
   <mat-select [(value)]="selectedType.value" required>
@@ -6,7 +10,6 @@
     <mat-option value="SMALL STRAIGHT">Small straight</mat-option>
     <mat-option value="LARGE STRAIGHT">Large straight</mat-option>
   </mat-select>
-
 </mat-form-field>
 <button mat-raised-button color="primary" (click)="submit()" [disabled]="!selectedType.value" >Submit</button>
 <button mat-raised-button (click)="exit()" >Cancel</button>

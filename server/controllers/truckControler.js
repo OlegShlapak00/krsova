@@ -32,17 +32,18 @@ module.exports.getTrucksById = (request, response) => {
 
 module.exports.addTruck = (request, response) => {
     const userID = request.token.user._id;
-    const {type} = request.body;
+    const {type, name} = request.body;
     const status = "OS";
     const created_date = new Date();
-    if (!type ) {
-        return response.status(400).json({massage: "bad request"});
+    if (!type || !name ) {
+        return response.status(400).json({ massage: "bad request" });
     }
     const truck = new Truck(
         {
             "created_by": userID,
             "assign_to": "null",
             type,
+            "truck_name": name,
             status,
             created_date
         });
@@ -58,7 +59,7 @@ module.exports.addTruck = (request, response) => {
 module.exports.updateTruck = (request, response) => {
     const TruckId = request.params.id;
     const newType = request.body.type;
-    if(newType !=="SPRINTER"&& newType !=="SMALL STRAIGHT" && newType !=="LARGE STRAIGHT"){
+    if(newType !=="SPRINTER" && newType !=="SMALL STRAIGHT" && newType !=="LARGE STRAIGHT"){
         return response.status(400).json({massage: "Wrong truck type"});
     }
 

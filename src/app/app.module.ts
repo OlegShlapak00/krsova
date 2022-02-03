@@ -6,7 +6,7 @@ import { LoginAndRegistrationComponent } from './login-and-registration/login-an
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import {MatTabsModule} from '@angular/material/tabs';
 
-import {ReactiveFormsModule} from '@angular/forms';
+import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {MatFormFieldModule} from '@angular/material/form-field';
 import {MatInputModule} from '@angular/material/input';
 import {MatButtonModule} from '@angular/material/button';
@@ -30,20 +30,21 @@ import { LoadPipe } from './load.pipe';
     UpdateTruckComponent,
     LoadPipe
   ],
-  imports: [
-    BrowserModule,
-    BrowserAnimationsModule,
-    MatTabsModule,
-    ReactiveFormsModule,
-    MatFormFieldModule,
-    MatInputModule,
-    MatButtonModule,
-    MatSelectModule,
-    HttpClientModule,
-    MatTooltipModule,
-    MatSnackBarModule,
-    MatDialogModule
-  ],
+    imports: [
+        BrowserModule,
+        BrowserAnimationsModule,
+        MatTabsModule,
+        ReactiveFormsModule,
+        MatFormFieldModule,
+        MatInputModule,
+        MatButtonModule,
+        MatSelectModule,
+        HttpClientModule,
+        MatTooltipModule,
+        MatSnackBarModule,
+        MatDialogModule,
+        FormsModule
+    ],
   providers: [],
   bootstrap: [AppComponent]
 })

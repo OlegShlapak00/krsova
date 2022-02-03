@@ -19,18 +19,18 @@
       <h2 class="form-label">Info about user</h2>
       <h3 class="form-field">Email: {{user.email}}</h3>
       <h3 class="form-field">Created date: {{user.date | date}}</h3>
-      <h3>Register as : {{user.role}}</h3>
+      <h3>Register as: {{user.role}}</h3>
     </form>
 
     <form class="form" action="">
       <h2>You can exit from this profile</h2>
       <h3>Just press the button :)</h3>
-      <button mat-raised-button color="primary" (click)="exit()">Sign Out</button>
+      <button mat-raised-button (click)="exit()">Sign Out</button>
     </form>
 
     <form class="form" action="">
       <h2>You can delete this profile</h2>
-      <button mat-raised-button color="primary" matTooltip="Are you sure about this?" (click)="deleteUser()">Delete me
+      <button mat-raised-button  matTooltip="Are you sure about this?" (click)="deleteUser()">Delete me
       </button>
     </form>
 
@@ -39,20 +39,21 @@
   <mat-tab *ngIf="user.role ==='DRIVER'" label="My Trucks">
     <section class="trucks">
       <div *ngFor="let truck of userTrucks" class="truck">
-        <h2>{{truck.type}}</h2>
-        <h3>Created date: {{truck.created_date | date }}</h3>
-        <h3>Truck Status: {{truck.status | truckStatus}}</h3>
+        <h2>{{ truck?.truck_name }}</h2>
+        <h3>Truck type: {{ truck.type }}</h3>
+        <h3>Created date: {{ truck.created_date | date }}</h3>
+        <h3>Truck Status: {{ truck.status | truckStatus }}</h3>
 
-        <button mat-raised-button color="primary" (click)="assignTruck(truck._id)" [disabled]="truck.status !== 'OS'">
+        <button mat-raised-button (click)="assignTruck(truck._id)" [disabled]="truck.status !== 'OS'">
           Assign
         </button>
-        <button mat-raised-button color="primary" (click)="unAssignTruck(truck._id)" [disabled]="truck.status !=='IS'">
-          Un assign
+        <button mat-raised-button (click)="unAssignTruck(truck._id)" [disabled]="truck.status !=='IS'">
+          Unassigned
         </button>
-        <button mat-raised-button color="primary" (click)="updateTruck(truck._id, truck.type)"
+        <button mat-raised-button (click)="updateTruck(truck._id, truck.type)"
                 [disabled]="truck.status !=='OS'">Change Type
         </button>
-        <button mat-raised-button color="warn" (click)="deleteTruck(truck._id)" [disabled]="truck.status !=='OS'">
+        <button mat-raised-button class="red-button" (click)="deleteTruck(truck._id)" [disabled]="truck.status !=='OS'">
           Delete
         </button>
       </div>
@@ -65,9 +66,8 @@
   </mat-tab>
   <mat-tab *ngIf="user.role ==='DRIVER'" label="Active Loads">
     <div class="my-loads-header">
-      <h1></h1>
-      <h1>Active and New loads</h1>
-      <button mat-raised-button color="basic" class="update-load-button">
+      <h1 class="title">Active and New loads</h1>
+      <button mat-raised-button class="update-load-button">
         <img class="my-loads-header__refresh"
              (click)="update()"
              src="http://simpleicon.com/wp-content/uploads/refresh.png"
@@ -81,7 +81,7 @@
     <section *ngIf="( userLoads| load : 'ACTIVE').length === 0" class="no-load">
       <h1>You don`t have any active loads</h1>
       <h1>For newest information press update button</h1>
-      <button mat-raised-button color="basic" class="update-load-button no-load-button">
+      <button mat-raised-button color="basic" class="no-load-button">
         <img class="my-loads-header__refresh "
              (click)="update()"
              src="http://simpleicon.com/wp-content/uploads/refresh.png"
@@ -99,7 +99,6 @@
         <h3>Delivery address: {{load.delivery_address}}</h3>
         <h3>Payload: {{load.payload}}</h3>
         <h3>Load state: {{load.state}}</h3>
-        <h3>Load status: {{load.status}}</h3>
         <div class="load-dimensions">
           <h2>Load dimensions:</h2>
           <h4>Width: {{load.dimensions.width}}</h4>
@@ -114,11 +113,11 @@
     </section>
   </mat-tab>
   <mat-tab *ngIf="user.role ==='SHIPPER'" label="Create new Load">
-    <form class="load-form form" [formGroup]="loadForm">
+    <form class="load-form form" autocomplete="off" [formGroup]="loadForm">
       <h2>Create Load</h2>
-      <mat-form-field class="full-width form-field">
+      <mat-form-field  class="full-width form-field">
         <mat-label>Name of load</mat-label>
-        <input type="text" matInput formControlName="name">
+        <input type="text" matInput formControlName="name" onfocus="this.setAttribute('autocomplete', 'none');">
         <mat-error *ngIf="loadForm.controls.name.errors">
           *required field
         </mat-error>
@@ -132,14 +131,14 @@
       </mat-form-field>
       <mat-form-field class="full-width form-field">
         <mat-label>Enter the pickup address</mat-label>
-        <input type="text" matInput formControlName="pickup_address">
+        <input type="text" matInput formControlName="pickup_address" onfocus="this.setAttribute('autocomplete', 'none');">
         <mat-error *ngIf="loadForm.controls.pickup_address.errors">
           *required field
         </mat-error>
       </mat-form-field>
       <mat-form-field class="full-width form-field">
         <mat-label>Enter the delivery address</mat-label>
-        <input type="text" matInput formControlName="delivery_address">
+        <input type="text" matInput formControlName="delivery_address" onfocus="this.setAttribute('autocomplete', 'none');">
         <mat-error *ngIf="loadForm.controls.delivery_address.errors">
           *required field
         </mat-error>
@@ -148,29 +147,29 @@
         <h2>Enter the load dimensions</h2>
         <mat-form-field class="full-width form-field">
           <mat-label>Width</mat-label>
-          <input type="number" matInput formControlName="width">
+          <input type="text" matInput formControlName="width">
           <mat-error *ngIf="loadForm.controls.width.errors">
             *required field
           </mat-error>
         </mat-form-field>
         <mat-form-field class="full-width form-field">
           <mat-label>Length</mat-label>
-          <input type="number" matInput formControlName="length">
+          <input type="text" matInput formControlName="length" onfocus="this.setAttribute('autocomplete', 'none');">
           <mat-error *ngIf="loadForm.controls.length.errors">
             *required field
           </mat-error>
         </mat-form-field>
         <mat-form-field class="full-width form-field">
           <mat-label>height</mat-label>
-          <input type="number" matInput formControlName="height">
+          <input type="text" matInput formControlName="height">
           <mat-error *ngIf="loadForm.controls.height.errors">
             *required field
           </mat-error>
         </mat-form-field>
       </div>
       <div class="load-form-buttons">
-        <button mat-raised-button (click)="saveLoad()" color="basic">Save the load</button>
-        <button mat-raised-button (click)="saveAndPostLoad()" color="primary">Save and post</button>
+        <button mat-raised-button (click)="saveLoad()" class="black-button" >Save the load</button>
+        <button mat-raised-button (click)="saveAndPostLoad()" >Save and post</button>
       </div>
     </form>
   </mat-tab>

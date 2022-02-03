@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, OnDestroy, OnInit} from '@angular/core';
 import {UserServiceService} from '../Services/user-service.service';
 import {AuthServiseService} from '../Services/auth-servise.service';
 import {LoadServiceService} from '../Services/load-service.service';
@@ -10,29 +10,36 @@ import {LoadDialogComponent} from '../load-dialog/load-dialog.component';
 import {TruckServiceService} from '../Services/truck-service.service';
 import {UpdateTruckComponent} from '../update-truck/update-truck.component';
 
+const DELAY_TIME = 10000;
+
 @Component({
   selector: 'app-home-page',
   templateUrl: './home-page.component.html',
   styleUrls: ['./home-page.component.css']
 })
-export class HomePageComponent implements OnInit {
+export class HomePageComponent implements OnInit, OnDestroy {
+
   user;
   userLoads;
   loadForm;
   userTrucks;
-
+  cache;
   constructor(private userService: UserServiceService,
               private authService: AuthServiseService,
               private loadService: LoadServiceService,
               private truckService: TruckServiceService,
               private fb: FormBuilder,
               private snackBar: MatSnackBar,
-              public dialog: MatDialog
-  ) {
+              public dialog: MatDialog) {
 
   }
 
+  ngOnDestroy(): void {
+    clearInterval(this.cache);
+  }
+
   ngOnInit(): void {
+    this.cache = setInterval(() => this.update(), DELAY_TIME);
     this.loadForm = this.fb.group({
       name: ['', Validators.required],
       payload: ['', Validators.required],
@@ -204,11 +211,10 @@ export class HomePageComponent implements OnInit {
   }
 
   deleteTruck(id): void {
-    this.truckService.deleteTruck(id)
-      .subscribe(res => {
-        this.openSnackBar(res.massage);
-      });
-    this.updateTrucks();
+    this.truckService.deleteTruck(id).subscribe(res => {
+      this.openSnackBar(res.massage);
+      this.updateTrucks();
+    });
   }
 
   createTruck(): void {
@@ -231,7 +237,9 @@ export class HomePageComponent implements OnInit {
 
   }
   update(): void {
+    if(this.user.role === 'DRIVER') {
+      this.updateTrucks();
+    }
     this.updateLoads();
-    this.updateTrucks();
   }
 }

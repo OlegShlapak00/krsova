@@ -20,10 +20,10 @@ export class TruckServiceService {
       .set('authorization', `token ${this.userToken}`);
     return this.http.get(`${this.serverPath}/api/trucks`, { headers });
   }
-  addTruck(type: string): any {
+  addTruck(type: string, name: string): any {
     const headers = new HttpHeaders()
       .set('authorization', `token ${this.userToken}`);
-    return this.http.post(`${this.serverPath}/api/trucks`, {type}, { headers });
+    return this.http.post(`${this.serverPath}/api/trucks`, {type, name}, { headers });
   }
   updateTruck(type: string, id: string): any {
     const headers = new HttpHeaders()

@@ -13,6 +13,7 @@ import {TruckServiceService} from '../Services/truck-service.service';
 export class UpdateTruckComponent implements OnInit {
   isCreate = true;
   selectedType;
+  name: string;
 
   constructor(public dialogRef: MatDialogRef<LoadDialogComponent>,
               private snackBar: MatSnackBar,
@@ -28,9 +29,10 @@ export class UpdateTruckComponent implements OnInit {
     this.selectedType = new FormControl('', Validators.required);
   }
 
+
   submit(): void {
     if (this.isCreate) {
-      this.createTruck(this.selectedType.value);
+      this.createTruck(this.selectedType.value, this.name);
     } else {
       this.updateTruck(this.selectedType.value);
     }
@@ -38,8 +40,8 @@ export class UpdateTruckComponent implements OnInit {
   exit(): void {
     this.dialogRef.close();
   }
-  createTruck(type): void {
-    this.truckService.addTruck(type).subscribe(res => {
+  createTruck(type, name: string): void {
+    this.truckService.addTruck(type, name).subscribe(res => {
       this.snackBar.open(res.massage, '', {duration : 4000});
     });
   }

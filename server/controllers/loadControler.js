@@ -85,7 +85,8 @@ module.exports.changeState =  async (request, response) => {
       }
       if (currStateIndex === 2) {
         load.status = 'SHIPPED';
-        Truck.findOneAndUpdate({assign_to: id}, {status: "IS"})
+
+        Truck.findOneAndUpdate({ assign_to: id, current_load: load.created_by }, {status: "IS"})
           .then((truck) => {
             truck.save();
           });
@@ -199,10 +200,12 @@ module.exports.postLoadById = (request, response) => {
               return response.status(200).json({massage: "Load not posted", driver_found: false});
             }
             truck.status = "OL";
+            truck.current_load = request.token.user._id;
             load.assigned_to = truck.assign_to;
             const date = new Date();
             load.logs.push({massage: "assign to to user with id " + truck.assign_to, time: date});
             load.status = "ASSIGNED";
+
             load.save();
             truck.save();
             return response.status(200).json({massage: "Load  posted", driver_found: true});
